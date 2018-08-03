@@ -18,6 +18,8 @@ Module Program
 
         Dim xr As XmlReader = XmlReader.Create(extractPath + "\docProps\core.xml")
         Dim xa As XmlReader = XmlReader.Create(extractPath + "\word\document.xml")
+
+        End If
         Dim idEdit As New List(Of String)
         While xa.Read()
             If xa.Name = "w:r" Then
@@ -47,18 +49,18 @@ Module Program
         Next
 
         While xr.Read()
-            If xr.Name = "dc:creator" Then
-                Console.WriteLine("Created by: {0}", xr.Value)
+
+            If xr.IsStartElement("dc:creator") Then
+                Console.WriteLine("Created by: {0}", xr.ReadInnerXml())
             End If
-            If xr.Name = "dc:lastModifiedBy" Then
-                Dim name As String = xr("dc:creator")
-                Console.WriteLine("Last Modified by: {0}", name)
+            If xr.IsStartElement("dc:lastModifiedBy") Then
+                Console.WriteLine("Last Modified by: {0}", xr.ReadInnerXml())
             End If
-            If xr.Name = "dcterms:created" Then
-                Console.WriteLine("Created on: {0}", xr.Value.Trim())
+            If xr.IsStartElement("dcterms:created") Then
+                Console.WriteLine("Created on: {0}", xr.ReadInnerXml())
             End If
-            If xr.Name = "dcterms:modified" Then
-                Console.WriteLine("Last Modified on: {0}", xr.Value.Trim())
+            If xr.IsStartElement("dcterms:modified") Then
+                Console.WriteLine("Last Modified on: {0}", xr.ReadInnerXml())
             End If
         End While
 
